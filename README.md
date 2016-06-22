@@ -1,3 +1,21 @@
-# Cognitive Services Windows Common
+# Microsoft Cognitive Services: Windows Common Code
+This repository contains code shared between client libraries and samples acrosss different Microsoft Cognitive Services APIs.
+ * [Learn about Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services)
+ * [Find more SDKs & Samples]()
+ * 
+ 
+## Contributing
+We welcome contributions. Feel free to file issues and pull requests on the repo and we'll address them as we can. Learn more about how you can help on our [Contribution Rules & Guidelines](</CONTRIBUTING.md>). 
 
-This repository contains code shared between different Windows SDK and samples
+You can reach out to us anytime with questions and suggestions using our communities below:
+ - **Support questions:** [StackOverflow](<https://stackoverflow.com/questions/tagged/microsoft-cognitive>)
+ - **Feedback & feature requests:** [Cognitive Services UserVoice Forum](<https://cognitive.uservoice.com>)
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+## License
+All Microsoft Cognitive Services SDKs and samples are licensed with the MIT License. For more details, see
+[LICENSE](</LICENSE.md>).
+
+Sample images are licensed separately, please refer to [LICENSE-IMAGE](</LICENSE-IMAGE.md>).
