@@ -2,7 +2,7 @@
 This repository contains code shared between client libraries and samples acrosss different Microsoft Cognitive Services APIs.
  * [Learn about Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services)
  * [Find more SDKs & Samples]()
- * 
+ 
  
 ## Contributing
 We welcome contributions. Feel free to file issues and pull requests on the repo and we'll address them as we can. Learn more about how you can help on our [Contribution Rules & Guidelines](</CONTRIBUTING.md>). 
