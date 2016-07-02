@@ -1,5 +1,5 @@
 # Microsoft Cognitive Services: Windows Common Code
-This repository contains code shared between client libraries and samples acrosss different Microsoft Cognitive Services APIs.
+This repository contains code shared between client libraries and samples acrosss different Microsoft Cognitive Services APIs, formerly known as Project Oxford.
  * [Learn about Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services)
  * [Find more SDKs & Samples]()
  
@@ -19,3 +19,7 @@ All Microsoft Cognitive Services SDKs and samples are licensed with the MIT Lice
 [LICENSE](</LICENSE.md>).
 
 Sample images are licensed separately, please refer to [LICENSE-IMAGE](</LICENSE-IMAGE.md>).
+
+
+## Developer Code of Conduct
+Developers using Cognitive Services, including this client library & sample, are expected to follow the “Developer Code of Conduct for Microsoft Cognitive Services”, found at [http://go.microsoft.com/fwlink/?LinkId=698895](http://go.microsoft.com/fwlink/?LinkId=698895).
