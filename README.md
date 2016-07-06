@@ -1,7 +1,7 @@
 # Microsoft Cognitive Services: Windows Common Code
 This repository contains code shared between client libraries and samples acrosss different Microsoft Cognitive Services APIs, formerly known as Project Oxford.
  * [Learn about Microsoft Cognitive Services](https://www.microsoft.com/cognitive-services)
- * [Find more SDKs & Samples]()
+ * [Find more SDKs & Samples](https://www.microsoft.com/cognitive-services/en-us/SDK-Sample)
  
  
 ## Contributing
