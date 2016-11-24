@@ -39,6 +39,11 @@
                 <Button Click="SaveKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Save Key</Button>
                 <Button Click="DeleteKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Delete Key</Button>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Label VerticalAlignment="Center">Azure Environment:</Label>
+                <RadioButton GroupName="Environment" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" IsChecked="True" Checked="RadioButton_Checked">Global Azure</RadioButton>
+                <RadioButton GroupName="Environment" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" Checked="RadioButton_Checked">Mooncake - China Azure</RadioButton>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>
