@@ -49,6 +49,7 @@ namespace SampleUserControlLibrary
         private readonly string _defaultSubscriptionKeyPromptMessage = "Paste your subscription key here to start";
 
         private static string s_subscriptionKey;
+        private static string s_environment;
 
         private SampleScenarios _sampleScenarios;
         public SubscriptionKeyPage(SampleScenarios sampleScenarios)
@@ -75,6 +76,23 @@ namespace SampleUserControlLibrary
                 s_subscriptionKey = value;
                 OnPropertyChanged<string>();
                 _sampleScenarios.SubscriptionKey = s_subscriptionKey;
+            }
+        }
+
+        /// <summary>
+        /// Get or sets Azure Environment
+        /// </summary>
+        public string AzureEnvironment
+        {
+            get
+            {
+                return s_environment;
+            }
+
+            set
+            {
+                s_environment = value;
+                _sampleScenarios.AzureEnvironment = s_environment;
             }
         }
 
@@ -185,6 +203,17 @@ namespace SampleUserControlLibrary
         private void GetKeyButton_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.microsoft.com/cognitive-services/en-us/sign-up");
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            var button = sender as RadioButton;
+
+            if (button.Content != null)
+            {
+                // s_environment = button.Content.ToString().ToLower();
+                AzureEnvironment = button.Content.ToString().ToLower();
+            }
         }
     }
 }

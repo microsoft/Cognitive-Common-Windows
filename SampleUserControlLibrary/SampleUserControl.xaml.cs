@@ -98,6 +98,12 @@ namespace SampleUserControlLibrary
             set;
         }
 
+        public string AzureEnvironment
+        {
+            get;
+            set;
+        }
+
         public SampleScenarios()
         {
             InitializeComponent();
