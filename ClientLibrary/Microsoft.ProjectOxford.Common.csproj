@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="ClientError.cs" />
     <Compile Include="ClientException.cs" />
+    <Compile Include="Contract\Emotion.cs" />
+    <Compile Include="Contract\EmotionScores.cs" />
     <Compile Include="Contract\VideoFace.cs" />
     <Compile Include="Contract\VideoFragment.cs" />
     <Compile Include="Contract\VideoOperation.cs" />
