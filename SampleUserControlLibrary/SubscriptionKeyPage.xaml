@@ -46,10 +46,10 @@
                 </Grid.RowDefinitions>
                 <Label VerticalAlignment="Center" Margin="0,2" Height="26" Content="Subscription Key:"/>
                 <TextBox VerticalAlignment="Stretch" Grid.Column="1"  Padding="2" Text="{Binding SubscriptionKey, Mode=TwoWay}" Margin="0,5,0,5" Grid.ColumnSpan="2"/>
-                <Label VerticalAlignment="Center" Grid.Row="1" Content="EndPoint:" Margin="0,2" Height="26"/>
-                <TextBox VerticalAlignment="Stretch" Grid.Row="1"  Grid.Column="1" Padding="2" Text="{Binding SubscriptionEndPoint, Mode=TwoWay}" Margin="0,5,0,5" Grid.ColumnSpan="2"/>
-                <Button Click="SaveKey_Click" Grid.Row="2" Margin="78,7,73,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Save Key" Grid.Column="1" />
-                <Button Click="DeleteKey_Click" Margin="75,7,76,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Delete Key" Grid.Column="2" Grid.Row="2" />
+                <Label VerticalAlignment="Center" Grid.Row="1" Content="Endpoint:" Margin="0,2" Height="26"/>
+                <TextBox VerticalAlignment="Stretch" Grid.Row="1"  Grid.Column="1" Padding="2" Text="{Binding SubscriptionEndpoint, Mode=TwoWay}" Margin="0,5,0,5" Grid.ColumnSpan="2"/>
+                <Button Click="SaveSetting_Click" Grid.Row="2" Margin="78,7,73,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Save Setting" Grid.Column="1" />
+                <Button Click="DeleteSetting_Click" Margin="75,7,76,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Delete Setting" Grid.Column="2" Grid.Row="2" />
             </Grid>
 
         </StackPanel>
