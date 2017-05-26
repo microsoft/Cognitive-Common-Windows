@@ -98,11 +98,18 @@ namespace SampleUserControlLibrary
             set;
         }
 
+        public string SubscriptionEndPoint
+        {
+            get;
+            set;
+        }
+
         public SampleScenarios()
         {
             InitializeComponent();
             _subscriptionPage = new SubscriptionKeyPage(this);
             SubscriptionKey = _subscriptionPage.SubscriptionKey;
+            SubscriptionEndPoint = _subscriptionPage.SubscriptionEndPoint;
 
             SampleTitle = "Replace SampleNames with SampleScenarios.SampleTitle property";
 
