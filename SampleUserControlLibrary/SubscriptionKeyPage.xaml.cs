@@ -51,7 +51,8 @@ namespace SampleUserControlLibrary
         private readonly string _defaultSubscriptionKeyPromptMessage = "Paste your subscription key here firstly";
         private readonly string _defaultSubscriptionEndpointPromptMessage = "Paste your endpoint here to start";
 
-        private static string s_subscriptionKey, s_subscriptionEndpoint;
+        private static string s_subscriptionKey;
+        private static string s_subscriptionEndpoint;
 
         private SampleScenarios _sampleScenarios;
         public SubscriptionKeyPage(SampleScenarios sampleScenarios)
@@ -232,11 +233,11 @@ namespace SampleUserControlLibrary
             {
                 SaveSubscriptionKeyToIsolatedStorage(SubscriptionKey);
                 SaveSubscriptionEndpointToIsolatedStorage(SubscriptionEndpoint);
-                MessageBox.Show("Subscription key and endpoint is saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
+                MessageBox.Show("Subscription key and endpoint are saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
             }
             catch (System.Exception exception)
             {
-                MessageBox.Show("Fail to save subscription key & endpoint . Error message: " + exception.Message,
+                MessageBox.Show("Fail to save subscription key & endpoint. Error message: " + exception.Message,
                     "Subscription Key", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
