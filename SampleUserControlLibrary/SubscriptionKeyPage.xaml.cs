@@ -165,11 +165,11 @@ namespace SampleUserControlLibrary
             {
                 try
                 {
-                    using (var iStreamForEndPoint = new IsolatedStorageFileStream(_isolatedStorageSubscriptionEndpointFileName, FileMode.Open, isoStore))
+                    using (var iStreamForEndpoint = new IsolatedStorageFileStream(_isolatedStorageSubscriptionEndpointFileName, FileMode.Open, isoStore))
                     {
-                        using (var readerForEndPoint = new StreamReader(iStreamForEndPoint))
+                        using (var readerForEndpoint = new StreamReader(iStreamForEndpoint))
                         {
-                            subscriptionEndpoint = readerForEndPoint.ReadLine();
+                            subscriptionEndpoint = readerForEndpoint.ReadLine();
                         }
                     }
                 }
