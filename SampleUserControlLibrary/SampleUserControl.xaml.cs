@@ -104,6 +104,11 @@ namespace SampleUserControlLibrary
             set;
         }
 
+        public void set_subscriptionPage_defaultEndpoint(string msg)
+        {
+            _subscriptionPage.setDefaultSubscriptionEndpoint(msg);
+        }
+
         public SampleScenarios()
         {
             InitializeComponent();

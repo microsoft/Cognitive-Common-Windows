@@ -49,7 +49,7 @@ namespace SampleUserControlLibrary
         private readonly string _isolatedStorageSubscriptionEndpointFileName = "SubscriptionEndpoint.txt";
 
         private readonly string _defaultSubscriptionKeyPromptMessage = "Paste your subscription key here firstly";
-        private readonly string _defaultSubscriptionEndpointPromptMessage = "Paste your endpoint here to start";
+        private string _defaultSubscriptionEndpointPromptMessage = "Paste your endpoint here to start";
 
         private static string s_subscriptionKey;
         private static string s_subscriptionEndpoint;
@@ -119,7 +119,6 @@ namespace SampleUserControlLibrary
                 handler(this, new PropertyChangedEventArgs(caller));
             }
         }
-
 
         /// <summary>
         /// Gets the subscription key from isolated storage.
@@ -223,6 +222,16 @@ namespace SampleUserControlLibrary
         }
 
         /// <summary>
+        /// Set a default endpoint when there is no legal endpoint value
+        /// </summary>
+        /// <param name="msg"></param>
+        public void setDefaultSubscriptionEndpoint(string msg){
+            _defaultSubscriptionEndpointPromptMessage = msg;
+            s_subscriptionEndpoint = msg;
+
+        }
+
+        /// <summary>
         /// Handles the Click event of the saveSetting key save button.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -233,12 +242,12 @@ namespace SampleUserControlLibrary
             {
                 SaveSubscriptionKeyToIsolatedStorage(SubscriptionKey);
                 SaveSubscriptionEndpointToIsolatedStorage(SubscriptionEndpoint);
-                MessageBox.Show("Subscription key and endpoint are saved in your disk.\nYou do not need to paste the key next time.", "Subscription Key");
+                MessageBox.Show("Subscription key and endpoint are saved in your disk.\nYou do not need to paste the key next time.", "Subscription Setting");
             }
             catch (System.Exception exception)
             {
                 MessageBox.Show("Fail to save subscription key & endpoint. Error message: " + exception.Message,
-                    "Subscription Key", MessageBoxButton.OK, MessageBoxImage.Error);
+                    "Subscription Setting", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -250,7 +259,7 @@ namespace SampleUserControlLibrary
                 SubscriptionEndpoint = _defaultSubscriptionEndpointPromptMessage;
                 SaveSubscriptionEndpointToIsolatedStorage("");
                 SaveSubscriptionKeyToIsolatedStorage("");
-                MessageBox.Show("Subscription setting is deleted from your disk.", "Subscription Key");
+                MessageBox.Show("Subscription setting is deleted from your disk.", "Subscription Setting");
             }
             catch (System.Exception exception)
             {
