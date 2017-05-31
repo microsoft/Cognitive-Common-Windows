@@ -49,7 +49,7 @@ namespace SampleUserControlLibrary
         private readonly string _isolatedStorageSubscriptionEndpointFileName = "SubscriptionEndpoint.txt";
 
         private readonly string _defaultSubscriptionKeyPromptMessage = "Paste your subscription key here firstly";
-        private string _defaultSubscriptionEndpointPromptMessage = "Paste your endpoint here to start";
+        private readonly string _defaultSubscriptionEndpointPromptMessage = "Paste your endpoint here to start";
 
         private static string s_subscriptionKey;
         private static string s_subscriptionEndpoint;
@@ -225,10 +225,30 @@ namespace SampleUserControlLibrary
         /// Set a default endpoint when there is no legal endpoint value
         /// </summary>
         /// <param name="msg"></param>
-        public void setDefaultSubscriptionEndpoint(string msg){
-            _defaultSubscriptionEndpointPromptMessage = msg;
-            s_subscriptionEndpoint = msg;
-
+        public void SetDefaultSubscriptionEndpoint(string endpoint){
+            string subscriptionEndpoint = null;
+            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null))
+            {
+                try
+                {
+                    using (var iStreamForEndpoint = new IsolatedStorageFileStream(_isolatedStorageSubscriptionEndpointFileName, FileMode.Open, isoStore))
+                    {
+                        using (var readerForEndpoint = new StreamReader(iStreamForEndpoint))
+                        {
+                            subscriptionEndpoint = readerForEndpoint.ReadLine();
+                        }
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    subscriptionEndpoint = null;
+                }
+            }
+            if (string.IsNullOrEmpty(subscriptionEndpoint))
+            {
+                subscriptionEndpoint = endpoint;
+            }
+            s_subscriptionEndpoint = subscriptionEndpoint;
         }
 
         /// <summary>
