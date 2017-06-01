@@ -206,7 +206,7 @@ namespace SampleUserControlLibrary
         /// <summary>
         /// Saves the subscription endpoint to isolated storage.
         /// </summary>
-        /// <param name="subscriptionEndpoint">The subscription key.</param>
+        /// <param name="subscriptionEndpoint">The subscription endpoint.</param>
         private void SaveSubscriptionEndpointToIsolatedStorage(string subscriptionEndpoint)
         {
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null))
@@ -222,10 +222,11 @@ namespace SampleUserControlLibrary
         }
 
         /// <summary>
-        /// Set a default endpoint when there is no legal endpoint value
+        /// Set an endpoint when there is no legal endpoint value
         /// </summary>
         /// <param name="endpoint"></param>
-        public void SetSubscriptionEndpoint(string endpoint){
+        public void SetSubscriptionEndpoint(string endpoint)
+        {
             string subscriptionEndpoint = null;
             subscriptionEndpoint = GetSubscriptionEndpointFromIsolatedStorage();
             if(string.Equals(subscriptionEndpoint, _defaultSubscriptionEndpointPromptMessage))

@@ -65,7 +65,7 @@ namespace SampleUserControlLibrary
         public static DependencyProperty SampleScenarioListProperty =
             DependencyProperty.Register("SampleScenarioList", typeof(Scenario[]), typeof(SampleScenarios));
 
-        private SubscriptionKeyPage _subscriptionPage;
+        private SubscriptionKeyPage _subscriptionPage ;
 
         public string SampleTitle
         {
