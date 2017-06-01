@@ -51,7 +51,6 @@
                 <Button Click="SaveSetting_Click" Grid.Row="2" Margin="78,7,73,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Save Setting" Grid.Column="1" />
                 <Button Click="DeleteSetting_Click" Margin="75,7,76,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Delete Setting" Grid.Column="2" Grid.Row="2" />
             </Grid>
-
         </StackPanel>
     </Grid>
 </Page>

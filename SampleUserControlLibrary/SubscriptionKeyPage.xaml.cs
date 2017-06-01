@@ -224,31 +224,14 @@ namespace SampleUserControlLibrary
         /// <summary>
         /// Set a default endpoint when there is no legal endpoint value
         /// </summary>
-        /// <param name="msg"></param>
-        public void SetDefaultSubscriptionEndpoint(string endpoint){
+        /// <param name="endpoint"></param>
+        public void SetSubscriptionEndpoint(string endpoint){
             string subscriptionEndpoint = null;
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null))
+            subscriptionEndpoint = GetSubscriptionEndpointFromIsolatedStorage();
+            if(string.Equals(subscriptionEndpoint, _defaultSubscriptionEndpointPromptMessage))
             {
-                try
-                {
-                    using (var iStreamForEndpoint = new IsolatedStorageFileStream(_isolatedStorageSubscriptionEndpointFileName, FileMode.Open, isoStore))
-                    {
-                        using (var readerForEndpoint = new StreamReader(iStreamForEndpoint))
-                        {
-                            subscriptionEndpoint = readerForEndpoint.ReadLine();
-                        }
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    subscriptionEndpoint = null;
-                }
+                SubscriptionEndpoint = endpoint;
             }
-            if (string.IsNullOrEmpty(subscriptionEndpoint))
-            {
-                subscriptionEndpoint = endpoint;
-            }
-            s_subscriptionEndpoint = subscriptionEndpoint;
         }
 
         /// <summary>

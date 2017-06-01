@@ -104,9 +104,9 @@ namespace SampleUserControlLibrary
             set;
         }
 
-        public void SetSubscriptionPageDefaultEndpoint(string endpoint)
+        public void SetSubscriptionPageEndpoint(string endpoint)
         {
-            _subscriptionPage.SetDefaultSubscriptionEndpoint(endpoint);
+            _subscriptionPage.SetSubscriptionEndpoint(endpoint);
         }
 
         public SampleScenarios()
