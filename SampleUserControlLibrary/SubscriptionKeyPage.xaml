@@ -33,12 +33,24 @@
             <TextBlock Margin="5, 0, 5, 0" >Please note that each service (Face, Emotion, Speech, etc) has its own subscription key.</TextBlock>
             <TextBlock Margin="5, 0, 5, 0" >If you do not have key yet, please use the link to get a key first, then paste the key into the textbox below.</TextBlock>
             <Button Grid.Row="1" Grid.Column="3" Click="GetKeyButton_Click" HorizontalAlignment="Left" Style="{StaticResource LinkButton}" Margin="5, 0, 0, 0" Content="Get Key" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Label VerticalAlignment="Center">Subscription Key:</Label>
-                <TextBox VerticalAlignment="Stretch" Width="300" Padding="2" Text="{Binding Path=SubscriptionKey, Mode=TwoWay}" Margin="0,5,0,5"/>
-                <Button Click="SaveKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Save Key</Button>
-                <Button Click="DeleteKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Delete Key</Button>
-            </StackPanel>
+            <Grid Height="91"  Margin="5,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70*"/>
+                    <ColumnDefinition Width="252*"/>
+                    <ColumnDefinition Width="253*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Label VerticalAlignment="Center" Margin="0,2" Height="26" Content="Subscription Key:"/>
+                <TextBox VerticalAlignment="Stretch" Grid.Column="1"  Padding="2" Text="{Binding SubscriptionKey, Mode=TwoWay}" Margin="0,5,0,5" Grid.ColumnSpan="2"/>
+                <Label VerticalAlignment="Center" Grid.Row="1" Content="Endpoint:" Margin="0,2" Height="26"/>
+                <TextBox VerticalAlignment="Stretch" Grid.Row="1"  Grid.Column="1" Padding="2" Text="{Binding SubscriptionEndpoint, Mode=TwoWay}" Margin="0,5,0,5" Grid.ColumnSpan="2"/>
+                <Button Click="SaveSetting_Click" Grid.Row="2" Margin="78,7,73,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Save Setting" Grid.Column="1" />
+                <Button Click="DeleteSetting_Click" Margin="75,7,76,6" Padding="5, 0, 5, 0" VerticalAlignment="Center" Height="18" Content="Delete Setting" Grid.Column="2" Grid.Row="2" />
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>
