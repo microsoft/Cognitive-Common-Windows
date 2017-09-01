@@ -28,17 +28,32 @@
         </Style>
     </Page.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <TextBlock Margin="5, 0, 5, 0" >To use the service, you need to ensure that you have right subscription key.</TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="4" Orientation="Vertical" >
+            <TextBlock Grid.Row="0" Margin="5, 0, 5, 0" >To use the service, you need to ensure that you have right subscription key.</TextBlock>
             <TextBlock Margin="5, 0, 5, 0" >Please note that each service (Face, Emotion, Speech, etc) has its own subscription key.</TextBlock>
+            <TextBlock Margin="5, 0, 5, 0" >You must specify the endpoint that matches the API key.</TextBlock>
             <TextBlock Margin="5, 0, 5, 0" >If you do not have key yet, please use the link to get a key first, then paste the key into the textbox below.</TextBlock>
-            <Button Grid.Row="1" Grid.Column="3" Click="GetKeyButton_Click" HorizontalAlignment="Left" Style="{StaticResource LinkButton}" Margin="5, 0, 0, 0" Content="Get Key" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Label VerticalAlignment="Center">Subscription Key:</Label>
-                <TextBox VerticalAlignment="Stretch" Width="300" Padding="2" Text="{Binding Path=SubscriptionKey, Mode=TwoWay}" Margin="0,5,0,5"/>
-                <Button Click="SaveKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Save Key</Button>
-                <Button Click="DeleteKey_Click" Margin="5, 0, 0, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Delete Key</Button>
-            </StackPanel>
+            <Button Click="GetKeyButton_Click" HorizontalAlignment="Left" Style="{StaticResource LinkButton}" Margin="5, 0, 0, 0" Content="Get Key" />
         </StackPanel>
+
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Subscription Key:</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" Padding="2" Text="{Binding Path=SubscriptionKey, Mode=TwoWay}" Margin="0,5,0,5"/>
+
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Endpoint Address:</Label>
+        <TextBox Grid.Row="2" Grid.Column="1"  VerticalAlignment="Stretch" Padding="2" Text="{Binding Path=EndpointAddress, Mode=TwoWay}" Margin="0,5,0,5"/>
+
+        <Button Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Click="Save_Click" Margin="4, 0, 4, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Save</Button>
+        <Button Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Click="Delete_Click" Margin="4, 0, 4, 0" Padding="5, 0, 5, 0" VerticalAlignment="Center" >Delete</Button>
     </Grid>
 </Page>

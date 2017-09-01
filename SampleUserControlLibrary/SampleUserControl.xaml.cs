@@ -98,6 +98,12 @@ namespace SampleUserControlLibrary
             set;
         }
 
+        public string EndpointAddress
+        {
+            get;
+            set;
+        }
+
         public SampleScenarios()
         {
             InitializeComponent();
