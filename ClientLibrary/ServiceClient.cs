@@ -31,10 +31,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
@@ -43,7 +45,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.ProjectOxford.Common
 {
-    public abstract class ServiceClient
+    public abstract class ServiceClient : IDisposable
     {
         protected class UrlReqeust
         {
@@ -54,13 +56,8 @@ namespace Microsoft.ProjectOxford.Common
         {
             public ClientError Error { get; set; }
         }
-            
-        #region private/protected members
 
-        /// <summary>
-        /// The header's key name of asset url.
-        /// </summary>
-        private static string OperationLocation = "Operation-Location";
+        #region private/protected members
 
         /// <summary>
         /// The default resolver.
@@ -76,10 +73,14 @@ namespace Microsoft.ProjectOxford.Common
 
         private readonly HttpClient _httpClient;
 
+        private readonly bool _ownHttpClient;
+
+        private bool _disposed;
+
         /// <summary>
         /// Default constructor
         /// </summary>
-        protected ServiceClient() : this(new HttpClient())
+        protected ServiceClient() : this(new HttpClient(), true)
         {
         }
 
@@ -87,9 +88,40 @@ namespace Microsoft.ProjectOxford.Common
         ///  Test constructor; use to inject mock clients.
         /// </summary>
         /// <param name="httpClient">Custom HttpClient, for testing.</param>
-        protected ServiceClient(HttpClient httpClient)
+        protected ServiceClient(HttpClient httpClient) : this(httpClient, false)
+        {
+        }
+
+        private ServiceClient(HttpClient httpClient, bool ownHttpClient)
         {
             _httpClient = httpClient;
+            _ownHttpClient = ownHttpClient;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing && _ownHttpClient)
+            {
+                _httpClient.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        ~ServiceClient()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -116,11 +148,12 @@ namespace Microsoft.ProjectOxford.Common
         /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="apiUrl">API URL relative to the apiRoot</param>
         /// <param name="requestBody">Content of the HTTP request.</param>
+        /// <param name="cancellationToken">Async cancellation token</param>
         /// <returns>TResponse</returns>
         /// <exception cref="ClientException">Service exception</exception>
-        protected async Task<TResponse> PostAsync<TRequest, TResponse>(string apiUrl, TRequest requestBody)
+        protected Task<TResponse> PostAsync<TRequest, TResponse>(string apiUrl, TRequest requestBody, CancellationToken cancellationToken)
         {
-            return await SendAsync<TRequest, TResponse>(HttpMethod.Post, apiUrl, requestBody).ConfigureAwait(false);
+            return SendAsync<TRequest, TResponse>(HttpMethod.Post, apiUrl, requestBody, cancellationToken);
         }
 
         /// <summary>
@@ -130,11 +163,12 @@ namespace Microsoft.ProjectOxford.Common
         /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="apiUrl">API URL relative to the apiRoot</param>
         /// <param name="requestBody">Content of the HTTP request.</param>
+        /// <param name="cancellationToken">Async cancellation token</param>
         /// <returns>TResponse</returns>
         /// <exception cref="ClientException">Service exception</exception>
-        protected async Task<TResponse> GetAsync<TRequest, TResponse>(string apiUrl, TRequest requestBody)
+        protected Task<TResponse> GetAsync<TRequest, TResponse>(string apiUrl, TRequest requestBody, CancellationToken cancellationToken)
         {
-            return await SendAsync<TRequest, TResponse>(HttpMethod.Get, apiUrl, requestBody).ConfigureAwait(false);
+            return SendAsync<TRequest, TResponse>(HttpMethod.Get, apiUrl, requestBody, cancellationToken);
         }
 
         /// <summary>
@@ -145,9 +179,10 @@ namespace Microsoft.ProjectOxford.Common
         /// <param name="method">HTTP method</param>
         /// <param name="apiUrl">API URL, generally relative to the ApiRoot</param>
         /// <param name="requestBody">Content of the HTTP request</param>
+        /// <param name="cancellationToken">Async cancellation token</param>
         /// <returns>TResponse</returns>
         /// <exception cref="ClientException">Service exception</exception>
-        protected async Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method, string apiUrl, TRequest requestBody)
+        protected Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method, string apiUrl, TRequest requestBody, CancellationToken cancellationToken)
         {
             bool urlIsRelative = System.Uri.IsWellFormedUriString(apiUrl, System.UriKind.Relative);
 
@@ -168,38 +203,43 @@ namespace Microsoft.ProjectOxford.Common
                 }
             }
 
-            HttpResponseMessage response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            var task = _httpClient.SendAsync(request, cancellationToken)
+                .ContinueWith(t => GetContent(t.Result)
+                    .ContinueWith(u => GetResponse<TResponse>(t.Result, u.Result)));
+
+            return task.Result;
+        }
+
+        private Task<string> GetContent(HttpResponseMessage response)
+        {
             if (response.IsSuccessStatusCode)
             {
-                string responseContent = null;
                 if (response.Content != null)
                 {
-                    responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return response.Content.ReadAsStringAsync();
                 }
+            }
+            else if (response.Content != null && response.Content.Headers.ContentType.MediaType.Contains("application/json"))
+            {
+                return response.Content.ReadAsStringAsync();
+            }
+            return Task.FromResult("");
+        }
 
+        private TResponse GetResponse<TResponse>(HttpResponseMessage response, string responseContent)
+        {
+            if (response.IsSuccessStatusCode)
+            {
                 if (!string.IsNullOrWhiteSpace(responseContent))
                 {
                     return JsonConvert.DeserializeObject<TResponse>(responseContent, s_settings);
                 }
-
-                // For video submission, the response content is empty. The information is in the
-                // response headers. 
-                var output = System.Activator.CreateInstance<TResponse>();
-                if (output is Contract.VideoOperation)
-                {
-                    var operation = output as Contract.VideoOperation;
-                    operation.Url = response.Headers.GetValues(OperationLocation).First();
-                    return output;
-                }
-
-                return default(TResponse);
             }
             else
             {
                 if (response.Content != null && response.Content.Headers.ContentType.MediaType.Contains("application/json"))
                 {
-                    var errorObjectString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var wrappedClientError = JsonConvert.DeserializeObject<WrappedClientError>(errorObjectString);
+                    var wrappedClientError = JsonConvert.DeserializeObject<WrappedClientError>(responseContent);
                     if (wrappedClientError?.Error != null)
                     {
                         throw new ClientException(wrappedClientError.Error, response.StatusCode);
@@ -208,7 +248,6 @@ namespace Microsoft.ProjectOxford.Common
 
                 response.EnsureSuccessStatusCode();
             }
-
             return default(TResponse);
         }
         #endregion
