@@ -85,19 +85,27 @@ namespace Microsoft.ProjectOxford.Common
         }
 
         /// <summary>
-        ///  Test constructor; use to inject mock clients.
+        /// Test constructor; use to inject mock clients.
         /// </summary>
         /// <param name="httpClient">Custom HttpClient, for testing.</param>
         protected ServiceClient(HttpClient httpClient) : this(httpClient, false)
         {
         }
 
+        /// <summary>
+        /// Common constructor for default and test.
+        /// </summary>
+        /// <param name="httpClient">Custom HttpClient, for testing.</param>
+        /// <param name="ownHttpClient">True if this object owns the HttpClient, false if the caller owns it.</param>
         private ServiceClient(HttpClient httpClient, bool ownHttpClient)
         {
             _httpClient = httpClient;
             _ownHttpClient = ownHttpClient;
         }
 
+        /// <summary>
+        /// IDisposable.Dispose implementation.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -210,6 +218,9 @@ namespace Microsoft.ProjectOxford.Common
             return task.Result;
         }
 
+        /// <summary>
+        /// Task to get the HTTP response string.
+        /// </summary>
         private Task<string> GetContent(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
@@ -226,6 +237,9 @@ namespace Microsoft.ProjectOxford.Common
             return Task.FromResult("");
         }
 
+        /// <summary>
+        /// Task to construct the JSON object from the HTTP response.
+        /// </summary>
         private TResponse GetResponse<TResponse>(HttpResponseMessage response, string responseContent)
         {
             if (response.IsSuccessStatusCode)
