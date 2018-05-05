@@ -1,4 +1,4 @@
-﻿// 
+//
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license.
 // 
@@ -47,7 +47,7 @@ namespace Microsoft.ProjectOxford.Common
 {
     public abstract class ServiceClient : IDisposable
     {
-        protected class UrlReqeust
+        protected class UrlRequest
         {
             public string url { get; set; }
         }
@@ -71,7 +71,7 @@ namespace Microsoft.ProjectOxford.Common
             ContractResolver = s_defaultResolver
         };
 
-        private readonly HttpClient _httpClient;
+        protected HttpClient HttpClient { get; }
 
         private readonly bool _ownHttpClient;
 
@@ -99,7 +99,7 @@ namespace Microsoft.ProjectOxford.Common
         /// <param name="ownHttpClient">True if this object owns the HttpClient, false if the caller owns it.</param>
         private ServiceClient(HttpClient httpClient, bool ownHttpClient)
         {
-            _httpClient = httpClient;
+            HttpClient = httpClient;
             _ownHttpClient = ownHttpClient;
         }
 
@@ -121,7 +121,7 @@ namespace Microsoft.ProjectOxford.Common
 
             if (disposing && _ownHttpClient)
             {
-                _httpClient.Dispose();
+                HttpClient.Dispose();
             }
 
             _disposed = true;
@@ -167,16 +167,15 @@ namespace Microsoft.ProjectOxford.Common
         /// <summary>
         /// Helper method executing a POST REST request.
         /// </summary>
-        /// <typeparam name="TRequest">Type of request.</typeparam>
         /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="apiUrl">API URL relative to the apiRoot</param>
         /// <param name="requestBody">Content of the HTTP request.</param>
         /// <param name="cancellationToken">Async cancellation token</param>
         /// <returns>TResponse</returns>
         /// <exception cref="ClientException">Service exception</exception>
-        protected Task<TResponse> GetAsync<TRequest, TResponse>(string apiUrl, TRequest requestBody, CancellationToken cancellationToken)
+        protected Task<TResponse> GetAsync<TResponse>(string apiUrl, CancellationToken cancellationToken)
         {
-            return SendAsync<TRequest, TResponse>(HttpMethod.Get, apiUrl, requestBody, cancellationToken);
+            return SendAsync<Object, TResponse>(HttpMethod.Get, apiUrl, null, cancellationToken);
         }
 
         /// <summary>
@@ -211,7 +210,7 @@ namespace Microsoft.ProjectOxford.Common
                 }
             }
 
-            var task = _httpClient.SendAsync(request, cancellationToken)
+            var task = HttpClient.SendAsync(request, cancellationToken)
                 .ContinueWith(t => GetContent(t.Result)
                     .ContinueWith(u => GetResponse<TResponse>(t.Result, u.Result)));
 
@@ -230,7 +229,7 @@ namespace Microsoft.ProjectOxford.Common
                     return response.Content.ReadAsStringAsync();
                 }
             }
-            else if (response.Content != null && response.Content.Headers.ContentType.MediaType.Contains("application/json"))
+            else if (response.Content != null && response.Content.Headers.ContentType?.MediaType.Contains("application/json") == true)
             {
                 return response.Content.ReadAsStringAsync();
             }
@@ -251,12 +250,19 @@ namespace Microsoft.ProjectOxford.Common
             }
             else
             {
-                if (response.Content != null && response.Content.Headers.ContentType.MediaType.Contains("application/json"))
+                if (response?.Content?.Headers?.ContentType?.MediaType.Contains("application/json") == true)
                 {
+                    // Some of the endpoints return an top-level 'error' field (WrappedClientError) whereas some will simply
+                    // return the plain ClientError.
                     var wrappedClientError = JsonConvert.DeserializeObject<WrappedClientError>(responseContent);
                     if (wrappedClientError?.Error != null)
                     {
                         throw new ClientException(wrappedClientError.Error, response.StatusCode);
+                    }
+                    var clientError = JsonConvert.DeserializeObject<ClientError>(responseContent);
+                    if (clientError != null)
+                    {
+                        throw new ClientException(clientError, response.StatusCode);
                     }
                 }
 
