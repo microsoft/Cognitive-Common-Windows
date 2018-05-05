@@ -150,7 +150,7 @@ namespace Microsoft.ProjectOxford.Common
 
         #region the JSON client
         /// <summary>
-        /// Helper method executing a GET REST request.
+        /// Helper method executing a POST REST request.
         /// </summary>
         /// <typeparam name="TRequest">Type of request.</typeparam>
         /// <typeparam name="TResponse">Type of response.</typeparam>
@@ -165,7 +165,7 @@ namespace Microsoft.ProjectOxford.Common
         }
 
         /// <summary>
-        /// Helper method executing a POST REST request.
+        /// Helper method executing a GET REST request.
         /// </summary>
         /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="apiUrl">API URL relative to the apiRoot</param>
