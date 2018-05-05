@@ -169,7 +169,6 @@ namespace Microsoft.ProjectOxford.Common
         /// </summary>
         /// <typeparam name="TResponse">Type of response.</typeparam>
         /// <param name="apiUrl">API URL relative to the apiRoot</param>
-        /// <param name="requestBody">Content of the HTTP request.</param>
         /// <param name="cancellationToken">Async cancellation token</param>
         /// <returns>TResponse</returns>
         /// <exception cref="ClientException">Service exception</exception>
