@@ -120,6 +120,7 @@ namespace Microsoft.ProjectOxford.Common
         /// <param name="error">The error entity.</param>
         /// <param name="httpStatus">The http status.</param>
         public ClientException(ClientError error, HttpStatusCode httpStatus)
+            : base(error?.Message)
         {
             this.Error = error;
             this.HttpStatus = httpStatus;
