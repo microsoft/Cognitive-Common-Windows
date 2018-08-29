@@ -39,7 +39,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.ProjectOxford.Common.Contract
 {
-    public class Emotion
+    public class FaceResult
     {
         /// <summary>
         /// Gets or sets the face rectangle.
@@ -55,14 +55,14 @@ namespace Microsoft.ProjectOxford.Common.Contract
         /// <value>
         /// The emotion scores.
         /// </value>
-        public EmotionScores Scores { get; set; }
+        public FaceAttributes FaceAttributes { get; set; }
 
         #region overrides
         public override bool Equals(object o)
         {
             if (o == null) return false;
 
-            var other = o as Emotion;
+            var other = o as FaceResult;
 
             if (other == null) return false;
 
@@ -75,20 +75,20 @@ namespace Microsoft.ProjectOxford.Common.Contract
                 if (!this.FaceRectangle.Equals(other.FaceRectangle)) return false;
             }
 
-            if (this.Scores == null)
+            if (this.FaceAttributes == null)
             {
-                return other.Scores == null;
+                return other.FaceAttributes == null;
             }
             else
             {
-                return this.Scores.Equals(other.Scores);
+                return this.FaceAttributes.Equals(other.FaceAttributes);
             }
         }
 
         public override int GetHashCode()
         {
             int r = (FaceRectangle == null) ? 0x33333333 : FaceRectangle.GetHashCode();
-            int s = (Scores == null) ? 0xccccccc : Scores.GetHashCode();
+            int s = (FaceAttributes == null) ? 0xccccccc : FaceAttributes.GetHashCode();
             return r ^ s;
         }
         #endregion
